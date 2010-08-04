@@ -80,6 +80,20 @@ void sign( QMap<QString, QString>& params )
     params["api_sig"] = lastfm::md5( s.toUtf8() );
 }
 
+lastfm::ws::ParseError::ParseError( lastfm::ws::Error e ) 
+ : std::runtime_error("lastfm::ws::Error"),
+   e(e)
+{
+}
+
+lastfm::ws::ParseError::~ParseError() throw()
+{
+}
+
+lastfm::ws::Error lastfm::ws::ParseError::enumValue() const
+{
+    return e;
+}
 
 QNetworkReply*
 lastfm::ws::get( QMap<QString, QString> params )

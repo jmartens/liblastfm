@@ -120,9 +120,10 @@ namespace lastfm
         {
             Error e;
         public:
-            explicit ParseError(Error e) : std::runtime_error("lastfm::ws::Error"), e(e)
-            {}
-            Error enumValue() const { return e; }
+            explicit ParseError(Error e);
+            ~ParseError() throw();
+
+            Error enumValue() const;
         };
 
         /** Generally you don't use this, eg. if you called Artist::getInfo(),
