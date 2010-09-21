@@ -214,6 +214,22 @@ lastfm::Track::removeTag( const QString& tag ) const
 }
 
 
+QNetworkReply*
+lastfm::Track::scrobble() const
+{
+    if (d->timestamp.isNull() || !d->timestamp.isValid())
+        return 0;
+    QMap<QString, QString> map;
+    map["method"] = "track.scrobble";
+    map["artist"] = d->artist;
+    map["track"] = d->title;
+    map["album"] = d->album;
+    map["duration"] = QString::number( d->duration );
+    map["mbid"] = d->mbid;
+    map["timestamp"] = QString::number( d->timestamp.toTime_t() );
+    return ws::post( map );
+}
+
 QUrl
 lastfm::Track::www() const
 {
@@ -224,7 +240,7 @@ lastfm::Track::www() const
 bool
 lastfm::Track::isMp3() const
 {
-    //FIXME really we should check the file header?
+    //FIXME really we should check the file header.
     return d->url.scheme() == "file" &&
            d->url.path().endsWith( ".mp3", Qt::CaseInsensitive );
 }

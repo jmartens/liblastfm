@@ -157,6 +157,29 @@ public:
     /** will return 0 if the string is "" */
     QNetworkReply* removeTag( const QString& ) const;
 
+    /** Scrobble a single track. Timestamp is the UTC unix time the track
+      * _started_
+      *
+      * The track must have been stamped via MutableTrack::stamp() or you'll
+      * get NULL back.
+      *
+      * NOTE Generally you don't want to use this. It's easier to use an 
+      * instance of the Audioscrobbler class as it does the hard stuff for you
+      * eg. caching, retries, etc. It's solid stuff. */
+    QNetworkReply* scrobble() const;
+
+    /** Scrobble lots of tracks. The purpose of this method is to scrobble
+      * tracks that could not be submitted because Last.fm was not accessible.
+      *
+      * So probably your flow is this: Try Track.scrobble, if that fails cache
+      * the track (see: ScrobbleCache). Then try to scrobble the cache every
+      * so often.
+      *
+      * NOTE Generally you don't want to use this. It's easier to use an 
+      * instance of the Audioscrobbler class which does all the hard bits for
+      * you. */
+    static QNetworkReply* scrobbleBatch( const QList<Track>& tracks );
+
     /** the url for this track's page at last.fm */
     QUrl www() const;
 

@@ -99,6 +99,8 @@ namespace lastfm
         // you have to parse the lfm() yourself members
         // http://www.last.fm/api/show?service=388
         static QNetworkReply* getRecommendedArtists();
+
+        static QNetworkReply* updateNowPlaying(const Track& );
     };
 }
 

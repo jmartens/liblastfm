@@ -20,6 +20,7 @@
 #include "User.h"
 #include "../core/UrlBuilder.h"
 #include "../core/XmlQuery.h"
+#include "../types/Track.h"
 #include <QStringList>
 using lastfm::User;
 using lastfm::AuthenticatedUser;
@@ -127,6 +128,20 @@ AuthenticatedUser::getRecommendedArtists()
 {
     QMap<QString, QString> map;
     map["method"] = "user.getRecommendedArtists";
+    return ws::post( map );
+}
+
+
+QNetworkReply* //static
+AuthenticatedUser::updateNowPlaying( const Track& t )
+{
+    QMap<QString, QString> map;
+    map["method"] = "user.updateNowPlaying";
+    map["artist"] = t.artist();
+    map["track"] = t.title();
+    map["album"] = t.album();
+    map["duration"] = QString::number( t.duration() );
+    map["mbid"] = t.mbid();
     return ws::post( map );
 }
 
