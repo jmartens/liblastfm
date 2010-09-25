@@ -38,7 +38,8 @@ def penis( path )
     end
   end
   # just copy it without adjustment if there were no exported classes
-  yield path, File.basename( path ) unless yielded
+  # HACK we yield ws.h twice due to ParseError
+  yield path, File.basename( path ) if path =~ /ws.h$/ or not yielded
 end
 
 
