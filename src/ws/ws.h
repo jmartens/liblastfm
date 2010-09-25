@@ -116,9 +116,10 @@ namespace lastfm
         LASTFM_DLLEXPORT QNetworkReply* post( QMap<QString, QString> );
 
 
-        class ParseError : public std::runtime_error
+        class LASTFM_DLLEXPORT ParseError : public std::runtime_error
         {
             Error e;
+
         public:
             explicit ParseError(Error e);
             ~ParseError() throw();
