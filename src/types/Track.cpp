@@ -167,14 +167,47 @@ QMap<QString, QString>
 lastfm::Track::params( const QString& method, bool use_mbid ) const
 {
     QMap<QString, QString> map;
+
+    // Required parameters
     map["method"] = "track."+method;
+    map["artist"] = d->artist;
+    map["track"] = d->title;
+
+    if (d->album.size())
+        map["album"] = d->album;
+/*
+    if (d->albumArtist.size())
+        map["albumArtist"] = d->albumArtist;
+
+    if (d->context.size())
+        map["context"] = d->context;
+*/
+    if (d->trackNumber != 0 )
+        map["trackNumber"] = QString::number(d->trackNumber);
+
     if (d->mbid.size() && use_mbid)
         map["mbid"] = d->mbid;
-    else {
-        map["artist"] = d->artist;
-        map["track"] = d->title;
-    }
+
+    if (d->duration != 0)
+        map["duration"] = QString::number(d->duration);
+
     return map;
+}
+
+
+QNetworkReply*
+lastfm::Track::nowPlaying() const
+{
+    QMap<QString, QString> map = params( "updateNowPlaying" );
+    return ws::post( map );
+}
+
+
+QNetworkReply*
+lastfm::Track::scrobble() const
+{
+    QMap<QString, QString> map = params( "scrobble" );
+    return ws::post( map );
 }
 
 

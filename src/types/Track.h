@@ -71,7 +71,7 @@ public:
     enum Source
     {
         // DO NOT UNDER ANY CIRCUMSTANCES CHANGE THE ORDER OR VALUES OF THIS ENUM!
-        // you will cause broken settings and b0rked scrobbler cache submissions
+        // you will cause broken settings and borked scrobbler cache submissions
 
         Unknown = 0,
         LastFmRadio,
@@ -150,6 +150,8 @@ public:
     /** you can get any QNetworkReply TagList using Tag::list( QNetworkReply* ) */
     QNetworkReply* getTags() const; // for the logged in user
     QNetworkReply* getTopTags() const;
+    QNetworkReply* nowPlaying() const;
+    QNetworkReply* scrobble() const;
 
     /** you can only add 10 tags, we submit everything you give us, but the
       * docs state 10 only. Will return 0 if the list is empty. */

@@ -26,6 +26,8 @@
 #include <QString>
 #include <QObject>
 #include <QVariant>
+#include <QPointer>
+#include <QNetworkReply>
 
 namespace lastfm
 {
@@ -57,12 +59,6 @@ namespace lastfm
     public:
         void cache( const QList<Track>& );
 
-        /** provided the current session is invalid, we will rehandshake.
-          * if the current session is valid, we do nothing. Basically, I don't want
-          * to write the code to safely delete currently executing submission
-          * requests */
-        void rehandshake();
-    
     public:
         enum Status
         {
@@ -90,13 +86,15 @@ namespace lastfm
         void status( int code );
 
     private slots:
-        void onHandshakeReturn( const QByteArray& );
         void onNowPlayingReturn( const QByteArray& );
         void onSubmissionReturn( const QByteArray& );
+        void onAnnounced();
+        void onScrobbled();
 
     private:
-        void handshake();
         void onError( Error );
+        QPointer<QNetworkReply> reply;
+        QList<lastfm::Track> m_batch;
 
     private:
         class AudioscrobblerPrivate* d;
